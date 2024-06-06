@@ -1,9 +1,12 @@
 import { createRoot } from 'react-dom/client';
-import { StrictMode, CSSProperties } from 'react';
+import { StrictMode, CSSProperties, useState } from 'react';
 import clsx from 'clsx';
 
 import { Article } from './components/article/Article';
-import { ArticleParamsForm } from './components/article-params-form/ArticleParamsForm';
+import {
+	ArticleParamsForm,
+	PageStyles,
+} from './components/article-params-form/ArticleParamsForm';
 import { defaultArticleState } from './constants/articleProps';
 
 import './styles/index.scss';
@@ -13,19 +16,27 @@ const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 const App = () => {
+	const [pageStyles, setPageStyles] = useState<PageStyles>({
+		fontFamilyOption: defaultArticleState.fontFamilyOption.value,
+		fontSizeOption: defaultArticleState.fontSizeOption.value,
+		fontColor: defaultArticleState.fontColor.value,
+		contentWidth: defaultArticleState.contentWidth.value,
+		backgroundColor: defaultArticleState.backgroundColor.value,
+	});
+
 	return (
 		<div
 			className={clsx(styles.main)}
 			style={
 				{
-					'--font-family': defaultArticleState.fontFamilyOption.value,
-					'--font-size': defaultArticleState.fontSizeOption.value,
-					'--font-color': defaultArticleState.fontColor.value,
-					'--container-width': defaultArticleState.contentWidth.value,
-					'--bg-color': defaultArticleState.backgroundColor.value,
+					'--font-family': pageStyles.fontFamilyOption,
+					'--font-size': pageStyles.fontSizeOption,
+					'--font-color': pageStyles.fontColor,
+					'--container-width': pageStyles.contentWidth,
+					'--bg-color': pageStyles.backgroundColor,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm />
+			<ArticleParamsForm isOpen={true} setPageStyles={setPageStyles} />
 			<Article />
 		</div>
 	);
