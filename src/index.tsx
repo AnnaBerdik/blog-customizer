@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client';
 import { StrictMode, CSSProperties, useState } from 'react';
-import clsx from 'clsx';
 
 import { Article } from './components/article/Article';
 import {
@@ -25,8 +24,8 @@ const App = () => {
 	});
 
 	return (
-		<div
-			className={clsx(styles.main)}
+		<main
+			className={styles.main}
 			style={
 				{
 					'--font-family': pageStyles.fontFamilyOption,
@@ -38,7 +37,7 @@ const App = () => {
 			}>
 			<ArticleParamsForm isOpen={true} setPageStyles={setPageStyles} />
 			<Article />
-		</div>
+		</main>
 	);
 };
 
