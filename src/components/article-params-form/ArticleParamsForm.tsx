@@ -12,8 +12,10 @@ import {
 	contentWidthArr,
 	fontSizeOptions,
 	OptionType,
+	defaultArticleState,
 } from 'src/constants/articleProps';
 import styles from './ArticleParamsForm.module.scss';
+import clsx from 'clsx';
 
 export type PageStyles = {
 	fontFamilyOption: string;
@@ -48,7 +50,9 @@ export const ArticleParamsForm = ({
 	};
 
 	useEffect(() => {
-		window.addEventListener('mousedown', handleOutsideClick);
+		if (!formOpen) {
+			window.addEventListener('mousedown', handleOutsideClick);
+		}
 		return () => {
 			window.removeEventListener('mousedown', handleOutsideClick);
 		};
@@ -71,11 +75,11 @@ export const ArticleParamsForm = ({
 
 	// Функция сброса формы, применение начальных стилей
 	const resetForm = () => {
-		setSelectedFontFamilyOptions(fontFamilyOptions[0]);
-		setSelectedFontSizeOptions(fontSizeOptions[0]);
-		setSelectedFontColors(fontColors[0]);
-		setSelectedBackgroundColors(backgroundColors[0]);
-		setSelectedContentWidthArr(contentWidthArr[0]);
+		setSelectedFontFamilyOptions(defaultArticleState.fontFamilyOption);
+		setSelectedFontSizeOptions(defaultArticleState.fontSizeOption);
+		setSelectedFontColors(defaultArticleState.fontColor);
+		setSelectedBackgroundColors(defaultArticleState.backgroundColor);
+		setSelectedContentWidthArr(defaultArticleState.contentWidth);
 		setPageStyles(styles);
 	};
 
@@ -90,14 +94,14 @@ export const ArticleParamsForm = ({
 		useState<OptionType>(backgroundColors[0]);
 	const [selectedContentWidthArr, setSelectedContentWidthArr] =
 		useState<OptionType>(contentWidthArr[0]);
+	const menuStyle = clsx({
+		[styles.container]: true,
+		[styles.container_open]: formOpen,
+	});
 	return (
 		<>
 			<ArrowButton onClick={handleArrowButtonClick} isOpen={formOpen} />
-			<aside
-				ref={formRef}
-				className={`${styles.container} ${
-					formOpen ? styles.container_open : ''
-				}`}>
+			<aside ref={formRef} className={menuStyle}>
 				<form className={styles.form} onSubmit={applicationNewStyles}>
 					<Text as='h2' size={31} weight={800} uppercase>
 						задайте параметры
